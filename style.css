@@ -101,9 +101,10 @@ input {
 }
 
 #main {
-    flex-wrap: wrap;
+    flex-direction: column;
     height: 80vh;
     gap: 2rem;
+    width: 98vw;
 }
 
 .game-board {
@@ -162,12 +163,14 @@ input {
     flex-direction: column;
     align-items: center;
     padding: 2rem;
+    width: 49vw;
 }
 
 #scoreboard {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 1rem;
+    width: 100%;
 }
 
 #scoreboard-table {
@@ -189,29 +192,4 @@ input {
 
 #reset-score-btn {
     margin-top: 1rem;
-}
-
-/* Add some responsiveness to the game board */
-@media only screen and (max-width: 768px) {
-    .game-board {
-        grid-template-columns: repeat(3, 50px);
-        grid-template-rows: repeat(3, 50px);
-    }
-
-    .cell {
-        width: 50px;
-        height: 50px;
-    }
-}
-
-@media only screen and (max-width: 480px) {
-    .game-board {
-        grid-template-columns: repeat(3, 30px);
-        grid-template-rows: repeat(3, 30px);
-    }
-
-    .cell {
-        width: 30px;
-        height: 30px;
-    }
 }

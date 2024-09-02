@@ -1,8 +1,10 @@
 // Get form, main game area, and container elements
-let togglebtn = document.getElementById("toggle");
-let body = document.getElementsByTagName('body')[0];
-let main = document.getElementById('main');
-let container = document.getElementById('container');
+const togglebtn = document.getElementById("toggle");
+const body = document.getElementsByTagName('body')[0];
+const main = document.getElementById('main');
+const container = document.getElementById('container');
+const playerTurn = document.getElementById('status');
+const cells = document.querySelectorAll('.cell');
 
 // Set default mode to light
 body.classList.add('light');
@@ -16,10 +18,8 @@ togglebtn.addEventListener('click', () => {
 
 // Initialize variables
 let player1, player2;
-let playerTurn = document.getElementById('status');
 let Xturn = true; // X starts first by default
 let gameActive = true; // Game is active by default
-let cells = document.querySelectorAll('.cell');
 
 // Hide the main game area initially
 main.classList.add('displayNone');
@@ -35,15 +35,14 @@ document.getElementById('playerForm').addEventListener('submit', function (event
     // Ensure both player names are provided
     if (player1.value && player2.value) {
         // Show the game area and hide the form
-        main.classList.remove('displayNone');
-        main.classList.add('displayFlex');
-        container.classList.remove('displayFlex');
-        container.classList.add('displayNone');
+        toggleVisibility(main, container);
 
         // Set initial player turn and update scoreboard
         playerTurn.innerHTML = `${player1.value}'s turn`;
         document.getElementById('player1name').innerHTML = player1.value;
         document.getElementById('player2name').innerHTML = player2.value;
+    } else {
+        alert('Please enter both player names');
     }
 });
 
@@ -51,12 +50,17 @@ document.getElementById('playerForm').addEventListener('submit', function (event
 cells.forEach(cell => {
     cell.addEventListener('click', () => {
         if (gameActive && cell.innerHTML == "") {
-            display(cell); // Display X or O
-            Xturn = !Xturn; // Switch turn
-            checking(cell); // Check if there's a winner or a draw
+            handlePlayerMove(cell);
         }
     });
 });
+
+// Function to handle player move
+function handlePlayerMove(cell) {
+    display(cell); // Display X or O
+    Xturn = !Xturn; // Switch turn
+    checking(cell); // Check if there's a winner or a draw
+}
 
 // Function to display X or O in a clicked cell
 function display(cell) {
@@ -74,8 +78,11 @@ function resetGame() {
         cell.innerHTML = ""; // Clear all cells
         cell.classList.remove('winning-cell'); // Remove winning cell highlight
     });
-    Xturn = true; // Reset turn to X
-    playerTurn.innerHTML = `${player1.value}'s turn`; // Reset status to player 1's turn
+    Xturn = true; // Reset the turn to X
+    
+    if (player1 && player2) { // Check if player1 and player2 are defined
+        playerTurn.innerHTML = `${player1.value}'s turn`; // Reset turn display
+    }
 }
 
 // Function to check for a win or draw
@@ -93,14 +100,7 @@ function checking(element) {
             const cellsToCheck = combo.map(i => cells[i]);
             const winner = cellsToCheck[0].innerHTML;
             if (winner !== "" && cellsToCheck.every(cell => cell.innerHTML === winner)) {
-                if (winner === 'X') {
-                    playerTurn.innerHTML = `${player1.value} wins!`;
-                } else if (winner === 'O') {
-                    playerTurn.innerHTML = `${player2.value} wins!`;
-                }
-                gameActive = false; // End game
-                cellsToCheck.forEach(cell => cell.classList.add('winning-cell')); // Highlight winning cells
-                updateScoreboard(winner);
+                declareWinner(winner, cellsToCheck);
                 return;
             }
         }
@@ -110,30 +110,65 @@ function checking(element) {
     if (!Array.from(cells).some(cell => cell.innerHTML === "")) {
         playerTurn.innerHTML = "It's a draw!";
         gameActive = false;
+        updateScoreboard("Draw"); // Update scoreboard in case of a draw
     }
 }
 
+// Declare winner and highlight the winning cells
+function declareWinner(winner, cellsToCheck) {
+    if (winner === 'X') {
+        playerTurn.innerHTML = `${player1.value} wins!`;
+    } else if (winner === 'O') {
+        playerTurn.innerHTML = `${player2.value} wins!`;
+    }
+    gameActive = false; // End game
+    cellsToCheck.forEach(cell => cell.classList.add('winning-cell')); // Highlight winning cells
+    updateScoreboard(winner);
+}
+
 // Update scoreboard function
-function updateScoreboard(winner) {
+function updateScoreboard(result) {
     const scoreboardTable = document.getElementById('scoreboard-table');
     const newRow = document.createElement('tr');
     const player1Cell = document.createElement('td');
     const player2Cell = document.createElement('td');
 
-    player1Cell.innerHTML = winner === 'X' ? 'Win' : 'Lose';
-    player2Cell.innerHTML = winner === 'X' ? 'Lose' : 'Win';
+    // Handle different results
+    if (result === 'X') {
+        player1Cell.innerHTML = 'Win';
+        player2Cell.innerHTML = 'Lose';
+    } else if (result === 'O') {
+        player1Cell.innerHTML = 'Lose';
+        player2Cell.innerHTML = 'Win';
+    } else if (result === 'Draw') {
+        player1Cell.innerHTML = 'Draw';
+        player2Cell.innerHTML = 'Draw';
+    }
 
+    // Append the new result row to the scoreboard table
     newRow.appendChild(player1Cell);
     newRow.appendChild(player2Cell);
-
     scoreboardTable.tBodies[0].appendChild(newRow);
 }
 
 // Reset the scoreboard and return to the player input form
 document.getElementById('reset-score-btn').addEventListener('click', () => {
-    document.querySelector('tbody').innerHTML = ""; // Clear the scoreboard
-    main.classList.add('displayNone');
-    main.classList.remove('displayFlex');
-    container.classList.add('displayFlex');
-    container.classList.remove('displayNone');
+    document.querySelector('#scoreboard-table tbody').innerHTML = ""; // Clear the scoreboard
+    toggleVisibility(container, main); // Go back to player input form
+    
+    // Reset the game state
+    gameActive = true;
+    cells.forEach(cell => {
+        cell.innerHTML = ""; // Clear cell content
+        cell.classList.remove('winning-cell'); // Remove winning cell class
+    });
+    Xturn = true; // Reset to X's turn
 });
+
+// Toggle visibility between main game and form containers
+function toggleVisibility(showElement, hideElement) {
+    hideElement.classList.add('displayNone');
+    hideElement.classList.remove('displayFlex');
+    showElement.classList.add('displayFlex');
+    showElement.classList.remove('displayNone');
+}
