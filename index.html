@@ -4,52 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Names</title>
+    <title>Tick Tack Toe</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <nav>
-        <h1>Tick Tack Toe</h1>
-        <button id="toggle">Light Mode</button>
-    </nav>
-    <hr>
-    <div id="container">
-        <h1>Enter Player Names</h1>
-        <form id="playerForm">
-            <div class="input-group">
-                <label for="player1">Player 1 Name:</label>
-                <input type="text" id="player1" name="player1" required>
+    <header>
+        <nav>
+            <h1>Tick Tack Toe</h1>
+            <button id="toggle" aria-label="Toggle light mode">Light Mode</button>
+        </nav>
+        <hr>
+    </header>
+    <main>
+        <section id="container">
+            <h1>Enter Player Names</h1>
+            <form id="playerForm">
+                <div class="input-group">
+                    <label for="player1">Player 1 Name:</label>
+                    <input type="text" id="player1" name="player1" required>
+                </div>
+                <div class="input-group">
+                    <label for="player2">Player 2 Name:</label>
+                    <input type="text" id="player2" name="player2" required>
+                </div>
+                <button type="submit">Start Game</button>
+            </form>
+        </section>
+        <section id="main">
+            <div class="game-board">
+                <div class="cell" id="cell-1"></div>
+                <div class="cell" id="cell-2"></div>
+                <div class="cell" id="cell-3"></div>
+                <div class="cell" id="cell-4"></div>
+                <div class="cell" id="cell-5"></div>
+                <div class="cell" id="cell-6"></div>
+                <div class="cell" id="cell-7"></div>
+                <div class="cell" id="cell-8"></div>
+                <div class="cell" id="cell-9"></div>
             </div>
-            <div class="input-group">
-                <label for="player2">Player 2 Name:</label>
-                <input type="text" id="player2" name="player2" required>
-            </div>
-            <button type="submit">Start Game</button>
-        </form>
-    </div>
-    <div id="main">
-        <div class="game-board">
-            <div class="cell" id="cell-1"></div>
-            <div class="cell" id="cell-2"></div>
-            <div class="cell" id="cell-3"></div>
-            <div class="cell" id="cell-4"></div>
-            <div class="cell" id="cell-5"></div>
-            <div class="cell" id="cell-6"></div>
-            <div class="cell" id="cell-7"></div>
-            <div class="cell" id="cell-8"></div>
-            <div class="cell" id="cell-9"></div>
-        </div>
 
-        <div class="controls">
-            <button id="reset-btn">Reset</button>
-            <h2 id="status"></h2>
-        </div>
-        <div id="scorecard">
-            <div id="scoreboard"></div> <!-- Add scoreboard element -->
-            <button id="reset-score-btn">Reset</button>
-        </div>
-    </div>
+            <div class="controls">
+                <button id="reset-btn" aria-label="Reset game">Reset</button>
+                <h2 id="status"></h2>
+            </div>
+            <div id="scorecard">
+                <div id="scoreboard">
+                    <table id="scoreboard-table">
+                        <thead>
+                            <tr>
+                                <th id="player1name"></th>
+                                <th id="player2name"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <button id="reset-score-btn" aria-label="Reset score">Reset</button>
+            </div>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 

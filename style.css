@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+:root {
+    --primary-color: darkcyan;
+    --secondary-color: #007f7f;
+    --light-background: rgb(228, 228, 228);
+    --dark-background: rgb(97, 97, 97);
+    --light-text: #fff;
+    --dark-text: darkcyan;
+    --font-family: "Poppins", sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,18 +21,18 @@ html,
 body {
     height: 100%;
     width: 100%;
-    font-family: "Poppins", sans-serif;
-    transition: background-color 0.5s ease, color 0.5s ease
+    font: 1rem var(--font-family);
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .light {
-    background-color: rgb(228, 228, 228);
-    color: darkcyan;
+    background-color: var(--light-background);
+    color: var(--dark-text);
 }
 
 .dark {
-    background-color: rgb(97, 97, 97);
-    color: #fff;
+    background-color: var(--dark-background);
+    color: var(--light-text);
 }
 
 nav {
@@ -36,8 +46,8 @@ nav {
 
 button {
     padding: 0.5rem 1rem;
-    background-color: darkcyan;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light-text);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -45,7 +55,7 @@ button {
 }
 
 button:hover {
-    background-color: #007f7f;
+    background-color: var(--secondary-color);
 }
 
 h1 {
@@ -57,11 +67,11 @@ hr {
     margin: 1rem auto;
 }
 
-.displayNone{
+.displayNone {
     display: none;
 }
 
-.displayFlex{
+.displayFlex {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -75,7 +85,7 @@ hr {
     gap: 2rem;
 }
 
-#playerForm{
+#playerForm {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -115,6 +125,12 @@ input {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.winning-cell {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
 .cell:hover {
     background-color: #f1f1f1;
     transform: scale(1.05);
@@ -126,33 +142,76 @@ input {
 
 .controls {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    padding: 2rem;
+}
+
+#reset-btn {
+    margin-right: 1rem;
 }
 
 #status {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
+    margin-left: 1rem;
 }
 
-.winning-cell {
-    border: 2px solid #ffff00;
-    /* yellow glow */
-    box-shadow: 0 0 10px #ffff00;
-    animation: glow 1s infinite;
+#scorecard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
 }
 
-@keyframes glow {
-    0% {
-        border-color: #ffff00;
+#scoreboard {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+#scoreboard-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#scoreboard-table th,
+#scoreboard-table td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+#scoreboard-table th {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+}
+
+#reset-score-btn {
+    margin-top: 1rem;
+}
+
+/* Add some responsiveness to the game board */
+@media only screen and (max-width: 768px) {
+    .game-board {
+        grid-template-columns: repeat(3, 50px);
+        grid-template-rows: repeat(3, 50px);
     }
 
-    50% {
-        border-color: #ffffff;
+    .cell {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .game-board {
+        grid-template-columns: repeat(3, 30px);
+        grid-template-rows: repeat(3, 30px);
     }
 
-    100% {
-        border-color: #ffff00;
+    .cell {
+        width: 30px;
+        height: 30px;
     }
 }
